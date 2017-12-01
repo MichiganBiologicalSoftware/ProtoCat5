@@ -4,5 +4,5 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 def index(request):
-    """Group index page."""
+    """Protocol API index page."""
     return HttpResponse("Testing")

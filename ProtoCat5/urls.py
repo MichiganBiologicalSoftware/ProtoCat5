@@ -21,9 +21,10 @@ urlpatterns = [
     url(r'^api/', include('Api.urls')),
     url(r'^chat/', include('Chat.urls')),
     url(r'^favorite/', include('Favorite.urls')),
-    url(r'^general/', include('General.urls')),
+    url(r'^', include('General.urls')),
     url(r'^group/', include('Group.urls')),
     url(r'^protocol/', include('Protocol.urls')),
+    url(r'^search/', include('Search.urls')),
     url(r'^user/', include('User.urls')),
     url(r'^admin/', admin.site.urls),
 ]

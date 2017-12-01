@@ -1,8 +1,8 @@
-"""Define the API for chat."""
+"""Define the basic views for search."""
 
 from django.http import HttpResponse
 from django.shortcuts import render
 
 def index(request):
-    """Chat API index page."""
+    """Search index page."""
     return HttpResponse("Testing")

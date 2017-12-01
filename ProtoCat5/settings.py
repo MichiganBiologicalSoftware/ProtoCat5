@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'General.apps.GeneralConfig',
     'Group.apps.GroupConfig',
     'Protocol.apps.ProtocolConfig',
+    'Search.apps.SearchConfig',
     'User.apps.UserConfig',
     'rest_framework',
     'rest_framework.authtoken',
