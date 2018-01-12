@@ -1,0 +1,79 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="pull-left"><img src="/static/images/protocat.png" height=30 width=30 id="logo"/></a>
+            <!-- TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO -->
+            <!--                                                      See if I can get rid of double logo                                                         -->
+            <span class="pull-left">
+                <a class="navbar-brand" href="/"><b id="title">ProtoCat</b></a>
+            </span>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="search_box">
+                    <!-- add search form -->
+                    <form class="navbar-form navbar-right zero-side-margins" role="search" method="POST" action="/search/">
+                        <div class="input-group">
+                            <input type="text" name="text_filter" class="form-control" placeholder="Search ProtoCat" autocomplete="off">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+                        </div>
+                        {% csrf_token %}
+                    </form>
+                </li>
+                <li class="dropdown hidden-xs">
+                    <a id="no-padding" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        {% if current_profile_info != None %}
+                        {% if current_profile_info.profile_image != "" %}
+                        <img id="navbar-image" src="{{ current_profile_info.profile_image.url }}" width=30 height=30 alt="Image not found" class="img-rounded"/><span id="navbar-drop-down" class="fix-margin-right caret"></span>
+                        {% else %}
+                        <img id="navbar-image" src="//2014.igem.org/wiki/images/thumb/0/04/ChrisP.jpg/330px-ChrisP.jpg.png" width=30 height=30 alt="Image not found" class="img-rounded"/><span id="navbar-drop-down" class="fix-margin-right caret"></span>
+                        {% endif %}
+                        {% else %}
+                        <span class="fix-margin-right"><span id="navbar-icon" class="glyphicon glyphicon-user"></span>Login</span>
+                        {% endif %}
+                    </a>
+                    <!-- TODO have drop-down menu open by default on small devices -->
+
+                    <ul class="dropdown-menu">
+                        {% if not user.is_authenticated %}
+                        <li><a href="/signup/">Sign up</a></li>
+                        <li><a href="/login/">Login</a></li>
+                        {% else %}
+                        <li><a href="/upload/">Upload Protocol</a></li>
+                        <li><a href="/import/">Import Protocol</a></li>
+                        <li><a href="/user/{{ user.profileinfo.id }}">User Profile</a></li>
+                        <li><a href="/organization">Organization and Group</a></li>
+                        <li><a href="{% url 'inbox'%}">Inbox {% if numMessages > 0 %}({{numMessages}}){% endif %}</a></li>
+                        <li><a href="/logoff/">Log out</a></li>
+                        {% endif %}
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/browse/">Browse</a></li>
+                        <li><a href="/about/">About</a></li>
+                    </ul>
+                </li>
+                {% if not user.is_authenticated %}
+                <li class="visible-xs"><a href="/signup/">Sign up</a></li>
+                <li class="visible-xs"><a href="/login/">Login</a></li>
+                {% else %}
+                <li class="visible-xs"><a href="/protocol_upload/">Upload Protocol</a></li>
+                <li class="visible-xs"><a href="/user/{{ user.profileinfo.id }}">User Profile</a></li>
+                <li class="visible-xs"><a href="/organization">Organization and Group</a></li>
+                <li class="visible-xs"><a href="{% url 'inbox'%}">Inbox</a></li>
+                <li class="visible-xs"><a href="/logoff/">Log out</a></li>
+                {% endif %}
+                <li class="visible-xs"><a href="/browse/">Browse</a></li>
+                <li class="visible-xs"><a href="/about/">About</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
