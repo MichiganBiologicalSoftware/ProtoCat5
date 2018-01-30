@@ -3,6 +3,10 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
+
 def index(request):
-    """User index page."""
-    return HttpResponse("Testing")
+	context = {
+		'title': 'ProtoCat5.0',
+		'current_profile_info': current_profile_info,
+	}
+	return render(request, 'index.html', context)
