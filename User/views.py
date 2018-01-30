@@ -1,7 +1,9 @@
 """Define the basic views for users."""
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate,login
+from django.contrib.auth.models import User
+from User.models import *
 
 def index(request):
     """User index page."""
@@ -11,7 +13,7 @@ def index(request):
 def login_user(request):
 	current_profile_info = request.user
 	if (not current_profile_info.is_anonymous()):
-		current_profile_info = ProfileInfo.objects.get(user = current_profile_info)
+		current_profile_info = UserInfo.objects.get(user = current_profile_info)
 	else:
 		current_profile_info = None
 	context = {
@@ -30,7 +32,7 @@ def submit_login(request):
 			# the pasword verified for the user
 			if user.is_active:
 				login(request, user)
-				profile_info = ProfileInfo.objects.get(user = user)
+				profile_info = UserInfo.objects.get(user = user)
 				return JsonResponse({'success': True, 'location': '/'})
 			else:
 				return JsonResponse({'success': False})
@@ -45,7 +47,7 @@ def submit_login(request):
 def sign_up(request):
 	current_profile_info = request.user
 	if (not current_profile_info.is_anonymous()):
-		current_profile_info = ProfileInfo.objects.get(user = current_profile_info)
+		current_profile_info = UserInfo.objects.get(user = current_profile_info)
 	else:
 		current_profile_info = None
 	context = {
@@ -58,22 +60,24 @@ def sign_up(request):
 def submit_sign_up(request):
 	current_profile_info = request.user
 	if (not current_profile_info.is_anonymous()):
-		current_profile_info = ProfileInfo.objects.get(user = current_profile_info)
+		current_profile_info = UserInfo.objects.get(user = current_profile_info)
 	else:
 		current_profile_info = None
 	try:
 		# grab data to verify user
-		username = request.POST['username']
+                username = request.POST['username']
 		password = request.POST['password']
 		email = request.POST['email']
-		user = User.objects.create_user(username, email, password)
-		user = authenticate(username = username, password = password)
-		profile_info = ProfileInfo(user = user)
+		print(username)
+                user = User.objects.create_user(username, email, password)
+		# user = authenticate(username = username, password = password)
+		profile_info = UserInfo(user = user)
 		profile_info.save()
 		current_profile_info = profile_info
 		login(request, user)
 		return JsonResponse({'success': True, 'location': '/'})
-	except:
+	except Exception as inst:
+                print(inst)
 		return JsonResponse({'success': False})
 
 # Log Off
