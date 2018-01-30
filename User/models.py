@@ -12,6 +12,12 @@ from rest_framework.authtoken.models import Token
 # Create your models here.
 # TODO: Write the whole file
 # connected to built in user but allow a picture
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
+
+
 class UserInfo(models.Model):
 	user = models.OneToOneField(User, related_name='userinfo', on_delete = models.CASCADE)
 	user_image = models.ImageField(blank = True, null = True, upload_to = "static/media")

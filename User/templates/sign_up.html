@@ -2,17 +2,17 @@
 
 {% block content %}
 <style>
-#login_title {
+#sign_up_title {
 	text-align: center;
 	font-family: 'Comfortaa';
 }
-#login_page {
+#sign_up_page {
 	height: 100vh;
 	position: relative;
 	text-align: center;
 	margin-top: -70px;
 }
-#login_form {
+#sign_up_form {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -20,19 +20,19 @@
 	-webkit-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 }
-#to_sign_up {
+#to_login {
 	text-align: center;
 }
 #image_holder {
 	text-align: center;
 }
-#login_image {
+#sign_up_image {
 	display: block;
 	margin: auto;
 	width: 227px;
 	height: 190px;
 }
-#to_sign_up > div {
+#to_login > div {
 	margin-top: 15px;
 	padding-top: 15px;
 	border-top: 1px;
@@ -49,7 +49,7 @@ $(document).on('ready', function() {
 		console.log("TRIGGERED")
 		$.ajax({
 			type: "POST",
-			url: "/user/submitlogin/",
+			url: "/user/submitsignup/",
 			data: data,
 			success: function(data, textStatus, request){
 				if (data.success) {
@@ -57,7 +57,7 @@ $(document).on('ready', function() {
 					window.location.href = data.location;
 				}
 				else {
-					alert(data.error);
+					alert("Username already taken");
 				}
 			},
 			failure: function(){
@@ -66,27 +66,27 @@ $(document).on('ready', function() {
 		});
 	});
 });
-
 </script>
 
 
-<div id="login_page" class="row">
-	<div id="login_form">
+<div id="sign_up_page" class="row">
+	<div id="sign_up_form">
 		<div class="col-sm-4 col-sm-offset-2 col-xs-12">
-			<h2 id="login_title">Log in to ProtoCat</h2>
-			<form id="submit-poster" action="/user/submitlogin/" method="post">
+			<h2 id="sign_up_title">Sign up for ProtoCat</h2>
+			<form action="/user/submitsignup/" method="post" id="submit-poster">
 				{% csrf_token %}
 				<input type="text" name="username" class="form-control" placeholder="Username"><br>
 				<input type="password" name="password" class="form-control" placeholder="Password"><br>
-				<input type="submit" class="form-control" value="Log in">
+				<input type="text" name="email" class="form-control" placeholder="placeholder@website.com"><br>
+				<input type="submit" class="form-control" value="Sign up">
 			</form>
 		</div>
 		<div id="img_holder" class="col-sm-4 hidden-xs">
-			<img id="login_image" src="/static/images/protocat.png" />
+			<img id="sign_up_image" src="/static/images/protocat.png" />
 		</div>
-		<div id="to_sign_up" class="col-sm-8 col-sm-offset-2 col-xs-12">
+		<div id="to_login" class="col-sm-8 col-sm-offset-2 col-xs-12">
 			<div>
-				<a id="sign_up_link" href="/user/signup/"> Sign up if you don't have an account</a>
+				<a id="login_link" href="/user/login/"> Log in if you already have an account</a>
 			</div>
 		</div>
 	</div>
