@@ -1,5 +1,4 @@
 """Define the basic views for users."""
-
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate
@@ -7,7 +6,6 @@ from django.contrib.auth import authenticate
 def index(request):
     """User index page."""
     return HttpResponse("Testing")
-
 # Login
 
 def login_user(request):

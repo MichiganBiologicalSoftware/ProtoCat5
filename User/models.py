@@ -23,6 +23,7 @@ class UserInfo(models.Model):
 	user_image = models.ImageField(blank = True, null = True, upload_to = "static/media")
 	about = models.TextField(blank = True, null = True)
 	contact_info = models.TextField(blank = True, null = True)
+	is_verified = models.BooleanField(blank = False, default = False)
 
 	def __str__(self):
 		return str(self.user)
