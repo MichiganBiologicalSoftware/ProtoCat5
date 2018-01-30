@@ -5,6 +5,7 @@
 *.pot
 *.pyc
 __pycache__/
+*/migrations/*
 local_settings.py
 db.sqlite3
 media
@@ -60,6 +61,7 @@ Session.vim
 tags
 
 ### VisualStudioCode ###
+.vscode/
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
