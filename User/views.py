@@ -65,11 +65,11 @@ def submit_sign_up(request):
 		current_profile_info = None
 	try:
 		# grab data to verify user
-                username = request.POST['username']
+		username = request.POST['username']
 		password = request.POST['password']
 		email = request.POST['email']
 		print(username)
-                user = User.objects.create_user(username, email, password)
+		user = User.objects.create_user(username, email, password)
 		# user = authenticate(username = username, password = password)
 		profile_info = UserInfo(user = user)
 		profile_info.save()
@@ -77,7 +77,7 @@ def submit_sign_up(request):
 		login(request, user)
 		return JsonResponse({'success': True, 'location': '/'})
 	except Exception as inst:
-                print(inst)
+		print(inst)
 		return JsonResponse({'success': False})
 
 # Log Off
