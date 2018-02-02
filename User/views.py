@@ -1,7 +1,8 @@
 """Define the basic views for users."""
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth import authenticate,login
+from django.contrib.auth.views import logout
 from django.contrib.auth.models import User
 from User.models import *
 from User.send_email import send_verification_email
