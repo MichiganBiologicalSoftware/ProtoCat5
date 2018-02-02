@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate,login
 from django.contrib.auth.models import User
 from User.models import *
+from User.send_email import send_verification_email
 
 def index(request):
     """User index page."""
@@ -68,13 +69,15 @@ def submit_sign_up(request):
 		username = request.POST['username']
 		password = request.POST['password']
 		email = request.POST['email']
-		print(username)
+		if not username or not password or not email:
+			return JsonResponse({'success': False, 'location': '/user/signup'})
 		user = User.objects.create_user(username, email, password)
 		# user = authenticate(username = username, password = password)
 		profile_info = UserInfo(user = user)
 		profile_info.save()
 		current_profile_info = profile_info
 		login(request, user)
+		send_verification_email(user)
 		return JsonResponse({'success': True, 'location': '/'})
 	except Exception as inst:
 		print(inst)
