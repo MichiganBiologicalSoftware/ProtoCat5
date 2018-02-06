@@ -1,6 +1,6 @@
 """Define the basic views for users."""
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate,login
 from django.contrib.auth.views import logout
 from django.contrib.auth.models import User
@@ -14,14 +14,17 @@ def index(request):
 
 def login_user(request):
 	current_profile_info = request.user
-	if (not current_profile_info.is_anonymous()):
+	if current_profile_info.is_authenticated():
 		current_profile_info = UserInfo.objects.get(user = current_profile_info)
+		print("authed")
 	else:
 		current_profile_info = None
 	context = {
 		'title': 'ProtoCat - Login',
 		'current_profile_info': current_profile_info,
 	}
+	if current_profile_info is not None:
+		return redirect('/user/')
 	return render(request, 'login.html', context)
 
 def submit_login(request):
