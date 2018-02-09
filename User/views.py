@@ -8,15 +8,53 @@ from User.models import *
 from User.send_email import send_verification_email
 
 def index(request):
-    """User index page."""
-    return HttpResponse("Testing")
+	"""User index page."""
+	# Redirects to user_id if logged in, to login page if not
+	current_profile_info = request.user
+	if current_profile_info.is_authenticated():
+		current_profile_info = UserInfo.objects.get(user = current_profile_info)
+	else:
+		current_profile_info = None
+	if current_profile_info is not None:
+		return redirect('/user/' + str(request.user.id))
+	return redirect('/user/login')
+
+def user(request, user_id):
+	"""User index page."""
+	current_profile_info = request.user
+	if (not current_profile_info.is_anonymous()):
+		current_profile_info = UserInfo.objects.get(user = current_profile_info)
+	else:
+		current_profile_info = None
+
+	user = UserInfo.objects.get(id = user_id)
+	#user_created_protocols = Protocol.objects.filter(author = user).order_by('-upload_date')
+	#user_created_notes = ProtocolComment.objects.filter(author = user).order_by('-upload_date')
+	#user_rated_protocols = ProtocolRating.objects.filter(person = user).order_by('-score')
+
+	title = 'ProtoCat - ' + str(user.user)
+
+	context = {
+		'title': title,
+		'current_profile_info': current_profile_info,
+		'profile_info': user,
+		# 'user_created_protocols': user_created_protocols,
+		# 'user_rated_protocols': user_rated_protocols,
+		# 'notes': user_created_notes
+	}
+
+	# either allow user to edit or not
+	if (current_profile_info != user):
+		return render(request, 'user.html', context)
+	else:
+		return render(request, 'edit_user.html', context)
+
 # Login
 
 def login_user(request):
 	current_profile_info = request.user
 	if current_profile_info.is_authenticated():
 		current_profile_info = UserInfo.objects.get(user = current_profile_info)
-		print("authed")
 	else:
 		current_profile_info = None
 	context = {

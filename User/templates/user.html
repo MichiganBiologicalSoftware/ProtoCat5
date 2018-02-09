@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+.padded {
+	padding-left:40px
+}
+.profile_image {
+	height: 165px;
+	width: 165px;
+}
+</style>
+
+<div class="col-sm-12">
+	<div class="row hidden-xs">
+		<div class="col-sm-2 col-sm-offset-1" style="text-align:center;">
+			<img {% if profile_info.profile_image != "" %}src="{{ profile_info.profile_image.url }}"{% else %}src="/static/images/basic_picture.png"{% endif %} width=200 height=200 alt="Image not found" class="center-block img-responsive img-circle profile_image"/>
+			{% if user.is_authenticated %}
+			{# <!--<span><a href="{% url 'new_message' recip_name=profile_info.user %}">Send Message</a></span> TODO for when we add messaging/chat	--> #}
+			{% endif %}
+		</div>
+		<div class="col-sm-4 padded">
+			<h2>{{ profile_info.user }}<br/>
+				<small>{{ profile_info.about }}</small></h2>
+				{% if profile_info.contact_info != None %}
+				<p>Website: <a href="//{{ profile_info.contact_info }}">{{ profile_info.contact_info }}</a></p>
+				{% else %}
+				<p>Website: None</p>
+				{% endif %}
+				<!--p>Meows: {{ profile_info.meows }}</p-->
+			</div>
+		</div>
+	</div>
+
+<div class="col-sm-12">
+	<div class="row visible-xs">
+		<div class="col-xs-12">
+			<img {% if profile_info.profile_image != "" %}src="{{ profile_info.profile_image.url }}"{% else %}src="/static/images/basic_picture.png"{% endif %} alt="Image not found" class="center-block img-responsive img-circle profile_image"/>
+		</div>
+		<div class="col-xs-12 padded">
+			<div class="center-block" style="text-align:center;">
+				<h2>{{ profile_info.user }}<br/>
+					<small>{{ profile_info.about }}</small></h2>
+					{% if profile_info.contact_info != None %}
+					<p>Website: {{ profile_info.contact_info|urlize }}</p>
+					{% else %}
+					<p>Website: None</p>
+					{% endif %}
+					<!--p>Meows: {{ profile_info.meows }}</p-->
+				</div>
+			</div>
+		</div>
+	</div>
+<br>
+<div class="col-sm-8 col-sm-offset-3">
+	<div class="panel panel-primary">
+		<ul class="nav nav-tabs">
+			<li class="active"><a data-toggle="tab" href="#Protocols">Protocols</a></li>
+			<li><a data-toggle="tab" href="#Notes">Notes</a></li>
+			<li><a data-toggle="tab" href="#Ratings">Ratings</a></li>
+			<li><a data-toggle="tab" href="#Favorites">Favorites</a></li>
+		</ul>
+
+		<div class="panel-body">
+			<div class="tab-content">
+				<div id="Protocols" class="tab-pane fade in active">
+					{% for protocol in user_created_protocols %}
+					<a href="/protocol/{{ protocol.id }}">{{ protocol.title }}</a>, {{protocol.upload_date}} <br />
+					{% endfor %}
+				</div>
+				<div id="Notes" class="tab-pane fade">
+					{% for note in notes %}
+					<a href="/protocol/{{ note.protocol.id }}">{{ note.note }}</a>, {{note.upload_date}} <br />
+					{% endfor %}
+				</div>
+				<div id="Ratings" class="tab-pane fade">
+					{% for rating in user_rated_protocols %}
+					<a href="/protocol/{{ rating.protocol.id }}">{{ rating.protocol.title }}</a>, gave a {{ rating.score }} <br />
+					{% endfor %}
+				</div>
+				<div id="Favorites" class="tab-pane fade">
+					{% for favorite in profile_info.favorites.all %}
+					<a href="/protocol/{{ favorite.id }}">{{ favorite.title }}</a>, by <a href="/user/{{ favorite.author.id }}">{{ favorite.author.user }}</a><br />
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
