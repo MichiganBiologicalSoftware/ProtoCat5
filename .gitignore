@@ -67,4 +67,9 @@ tags
 !.vscode/extensions.json
 .history
 
+### React and Virtual Machines ###
+env/
+node_modules/
+bundle.js
 # End of https://www.gitignore.io/api/vim,django,sublimetext,visualstudiocode
+
