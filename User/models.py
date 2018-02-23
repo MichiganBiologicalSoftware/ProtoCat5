@@ -19,20 +19,20 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 
 
 class UserInfo(models.Model):
-	user = models.OneToOneField(User, related_name='userinfo', on_delete = models.CASCADE)
-	user_image = models.ImageField(blank = True, null = True, upload_to = "static/media")
-	about = models.TextField(blank = True, null = True)
-	contact_info = models.TextField(blank = True, null = True)
-	is_verified = models.BooleanField(default = False)
+    user = models.OneToOneField(User, related_name='userinfo', on_delete = models.CASCADE)
+    user_image = models.ImageField(blank=True, null=True, upload_to="static/media")
+    about = models.TextField(blank=True, null=True)
+    contact_info = models.TextField(blank=True, null=True)
+    is_verified = models.BooleanField(default=False)
 
-	def __str__(self):
-		return str(self.user)
+    def __str__(self):
+        return str(self.user)
 
-	def email(self):
-		return self.user.email
+    def email(self):
+        return self.user.email
 
-	def is_admin(self):
-		return self.user.is_staff
+    def is_admin(self):
+        return self.user.is_staff
 
-	def date_joined(self):
-		return self.user.date_joined
+    def date_joined(self):
+        return self.user.date_joined
