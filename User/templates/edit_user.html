@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<script>
+
+function submit_xs() {
+	$('input[name="size"]').val(1);
+	var form_data = new FormData();
+	form_data.append("Data", "tosend");
+	form_data.append("csrfmiddlewaretoken", $('input[name="csrfmiddlewaretoken"]').val());
+	form_data.append("picture", $('input[name="picture"]').get(0).files[0]);
+	form_data.append("user_id", $('input[name="user_id"]').val());
+	form_data.append("size", $('input[name="size"]').val());
+	form_data.append("about1", $('input[name="about1"]').val());
+	form_data.append("website1", $('input[name="website1"]').val());
+	form_data.append("email1", $('input[name="email1"]').val());
+	form_data.append("about2", $('input[name="about2"]').val());
+	form_data.append("website2", $('input[name="website2"]').val());
+	form_data.append("email2", $('input[name="email2"]').val());
+	$.ajax({
+		type: "POST",
+		url: "/updateprofile/",
+		contentType: false,
+		processData: false,
+		data: form_data,
+		success: function(){
+			if (data.success) {
+				console.log("it worked")
+			}
+			else {
+				alert("Unable to update profile - please try again.")
+			}
+		},
+		failure: function(){
+			alert("Unable to connect to the server - please try again.")
+		}
+	});
+}
+
+function submit_sm() {
+	$('input[name="size"]').val(2);
+	var form_data = new FormData();
+	form_data.append("Data", "tosend");
+	form_data.append("csrfmiddlewaretoken", $('input[name="csrfmiddlewaretoken"]').val());
+	form_data.append("picture", $('input[name="picture"]').get(0).files[0]);
+	form_data.append("user_id", $('input[name="user_id"]').val());
+	form_data.append("size", $('input[name="size"]').val());
+	form_data.append("about1", $('input[name="about1"]').val());
+	form_data.append("website1", $('input[name="website1"]').val());
+	form_data.append("email1", $('input[name="email1"]').val());
+	form_data.append("about2", $('input[name="about2"]').val());
+	form_data.append("website2", $('input[name="website2"]').val());
+	form_data.append("email2", $('input[name="email2"]').val());
+	$.ajax({
+		type: "POST",
+		url: "/updateprofile/",
+		contentType: false,
+		processData: false,
+		data: form_data,
+		success: function(){
+			if (data.success) {
+				console.log("it worked")
+			}
+			else {
+				alert("Unable to update profile - please try again.")
+			}
+		},
+		failure: function(){
+			alert("Unable to connect to the server - please try again.")
+		}
+	});
+}
+
+</script>
+
+<style>
+.padded {
+	padding-left:40px
+}
+.profile_image {
+	height: 165px;
+	width: 165px;
+}
+#submit_div {
+	margin-bottom: 15px;
+}
+.left-align {
+	text-align: left!important;
+}
+#meows {
+	padding-top:7px;
+}
+</style>
+
+<div class="col-sm-12">
+	<div id="submit_div" class="row">
+		<div class="col-xs-12 visible-xs">
+			<input type="button" class="form-control" onclick="submit_xs()" value="Save Changes">
+		</div>
+		<div class="col-sm-12 hidden-xs">
+			<input type="button" class="form-control" onclick="submit_sm()" value="Save Changes">
+		</div>
+	</div>
+</div>
+
+
+<form id="submit-form" method="POST" action="/updateprofile/" enctype="multipart/form-data" accept-charset="utf-8">
+	{% csrf_token %}
+	<input name="picture" id="file_picker" style="display:none;" type="file" accept="image/*" onchange="$('.profile_image').attr('src', window.URL.createObjectURL(this.files[0]))">
+	<input name="user_id" type="hidden" value="{{ profile_info.id }}">
+	<input name="size" type="hidden" value="2">
+
+	<div class="col-sm-12">
+		<div class="row visible-xs">
+			<div class="col-xs-12">
+				<img {% if profile_info.profile_image != "" %}src="{{ profile_info.profile_image.url }}"{% else %}src="/static/images/basic_picture.png"{% endif %} width=200 height=200 alt="Image not found" class="center-block img-responsive img-circle profile_image"/>
+			</div>
+			<div class="col-xs-12 padded form-horizontal">
+				<h2>{{ profile_info.user }}</h2><br/>
+				<div class="form-group">
+					<label class="col-sm-2 control-label left-align">About:</label>
+					<div class="col-sm-10">
+						<input name="about1" class="form-control" type="text" value="{{ profile_info.about }}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label left-align">Website:</label>
+					<div class="col-sm-10">
+						<input name="website1" class="form-control" type="text" value="{{ profile_info.contact_info }}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label left-align">Email:</label>
+					<div class="col-sm-10">
+						<input name="email1" class="form-control" type="email" value="{{ profile_info.user.email }}">
+					</div>
+				</div>
+				<!--div class="form-group">
+					<label class="col-sm-2 control-label left-align">Meows:</label>
+					<div class="col-sm-10">
+						<p id="meows">{{ profile_info.meows }}</p>
+					</div>
+				</div-->
+			</div>
+		</div>
+	</div>
+
+	<div class="col-sm-12">
+		<div class="row hidden-xs">
+			<div class="col-sm-2">
+				<img onclick="$('#file_picker').click();" {% if profile_info.profile_image != "" %}src="{{ profile_info.profile_image.url }}"{% else %}src="/static/images/basic_picture.png"{% endif %} width=200 height=200 alt="Image not found" class="center-block img-responsive img-circle profile_image"/>
+			</div>
+			<div class="col-sm-10 padded form-horizontal">
+				<h2>{{ profile_info.user }}</h2><br/>
+				<div class="form-group">
+					<label class="col-sm-2 control-label left-align">About:</label>
+					<div class="col-sm-10">
+						<input name="about2" class="form-control" type="text" value="{{ profile_info.about }}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label left-align">Website:</label>
+					<div class="col-sm-10">
+						<input name="website2" class="form-control" type="text" value="{{ profile_info.contact_info }}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label left-align">Email:</label>
+					<div class="col-sm-10">
+						<input name="email2" class="form-control" type="email" value="{{ profile_info.user.email }}">
+					</div>
+				</div>
+				<!--div class="form-group">
+					<label class="col-sm-2 control-label left-align">Meows:</label>
+					<div class="col-sm-10">
+						<p id="meows">{{ profile_info.meows }}</p>
+					</div>
+				</div-->
+			</div>
+		</div>
+	</div>
+
+
+</form>
+<br>
+<div class="col-sm-10 col-sm-offset-2">
+	<div class="panel panel-primary">
+		<ul class="nav nav-tabs">
+			<li class="active"><a data-toggle="tab" href="#Protocols">Protocols</a></li>
+			<li><a data-toggle="tab" href="#Notes">Notes</a></li>
+			<li><a data-toggle="tab" href="#Ratings">Ratings</a></li>
+			<li><a data-toggle="tab" href="#Favorites">Favorites</a></li>
+		</ul>
+
+		<div class="panel-body">
+			<div class="tab-content">
+				<div id="Protocols" class="tab-pane fade in active">
+					{% for protocol in user_created_protocols %}
+					<a href="/protocol/{{ protocol.id }}">{{ protocol.title }}</a>, {{protocol.upload_date}} <br />
+					{% endfor %}
+				</div>
+				<div id="Notes" class="tab-pane fade">
+					{% for note in notes %}
+					<a href="/protocol/{{ note.protocol.id }}">{{ note.note }}</a>, {{note.upload_date}} <br />
+					{% endfor %}
+				</div>
+				<div id="Ratings" class="tab-pane fade">
+					{% for rating in user_rated_protocols %}
+					<a href="/protocol/{{ rating.protocol.id }}">{{ rating.protocol.title }}</a>, gave a {{ rating.score }} <br />
+					{% endfor %}
+				</div>
+				<div id="Favorites" class="tab-pane fade">
+					{% for favorite in profile_info.favorites.all %}
+					<a href="/protocol/{{ favorite.id }}">{{ favorite.title }}</a>, by <a href="/user/{{ favorite.author.id }}">{{ favorite.author.user }}</a><br />
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -7,3 +7,4 @@ pydocstyle==2.1.1
 pytz==2017.3
 six==1.11.0
 snowballstemmer==1.2.1
+nodeenv==1.2.0
