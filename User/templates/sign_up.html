@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+#sign_up_title {
+	text-align: center;
+	font-family: 'Comfortaa';
+}
+#sign_up_page {
+	height: 100vh;
+	position: relative;
+	text-align: center;
+	margin-top: -70px;
+}
+#sign_up_form {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 100%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+#to_login {
+	text-align: center;
+}
+#image_holder {
+	text-align: center;
+}
+#sign_up_image {
+	display: block;
+	margin: auto;
+	width: 227px;
+	height: 190px;
+}
+#to_login > div {
+	margin-top: 15px;
+	padding-top: 15px;
+	border-top: 1px;
+	border-top-color: lightgray;
+	border-top-style: solid;
+}
+</style>
+
+<script>
+$(document).on('ready', function() {
+	$('#submit-poster').on('submit', function(event) {
+		event.preventDefault();
+		var data = $('#submit-poster').serialize();
+		console.log("TRIGGERED")
+		$.ajax({
+			type: "POST",
+			url: "/user/submitsignup/",
+			data: data,
+			success: function(data, textStatus, request){
+				if (data.success) {
+					// data.redirect contains the string URL to redirect to
+					window.location.href = data.location;
+				}
+				else {
+					alert("Username already taken");
+				}
+			},
+			failure: function(){
+				alert('Unable to connect to the server');
+			}
+		});
+	});
+});
+</script>
+
+
+<div id="sign_up_page" class="row">
+	<div id="sign_up_form">
+		<div class="col-sm-4 col-sm-offset-2 col-xs-12">
+			<h2 id="sign_up_title">Sign up for ProtoCat</h2>
+			<form action="/user/submitsignup/" method="post" id="submit-poster">
+				{% csrf_token %}
+				<input type="text" name="username" class="form-control" placeholder="Username"><br>
+				<input type="password" name="password" class="form-control" placeholder="Password"><br>
+				<input type="text" name="email" class="form-control" placeholder="placeholder@website.com"><br>
+				<input type="submit" class="form-control" value="Sign up">
+			</form>
+		</div>
+		<div id="img_holder" class="col-sm-4 hidden-xs">
+			<img id="sign_up_image" src="/static/images/protocat.png" />
+		</div>
+		<div id="to_login" class="col-sm-8 col-sm-offset-2 col-xs-12">
+			<div>
+				<a id="login_link" href="/user/login/"> Log in if you already have an account</a>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
