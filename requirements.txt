@@ -8,3 +8,6 @@ pytz==2017.3
 six==1.11.0
 snowballstemmer==1.2.1
 nodeenv==1.2.0
+django-elasticsearch-dsl==0.4.4
+elasticsearch==5.5.2
+elasticsearch-dsl==5.4.0
