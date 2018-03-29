@@ -16,7 +16,7 @@ def index(request):
             "users": match_users
         })
 
-    users = UserInfo.objects.filter(about__contains=query)
+    users = UserInfo.objects.filter(about__icontains=query)
     for user in users:
         match_users.append(user.user.username)
 
