@@ -8,9 +8,15 @@ from django.core import serializers
 def index(request):
     """Favorites API index page."""
     query = request.GET.get("q", "")
-    
-    users = UserInfo.objects.filter(about__contains=query)
     match_users = []
+
+    if not query:
+        return JsonResponse({
+            "query": query,
+            "users": match_users
+        })
+
+    users = UserInfo.objects.filter(about__contains=query)
     for user in users:
         match_users.append(user.user.username)
 
