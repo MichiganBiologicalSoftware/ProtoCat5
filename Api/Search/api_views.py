@@ -17,6 +17,11 @@ def index(request):
         })
 
     users = UserInfo.objects.filter(about__icontains=query)
+    users = users | UserInfo.objects.filter(user__username__icontains=query)
+    users = users | UserInfo.objects.filter(user__email__icontains=query)
+    users = users | UserInfo.objects.filter(user__first_name__icontains=query)
+    users = users | UserInfo.objects.filter(user__last_name__icontains=query)
+
     for user in users:
         match_users.append(user.user.username)
 
