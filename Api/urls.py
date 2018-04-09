@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'group/', include('Api.Group.urls')),
     url(r'protocol/', include('Api.Protocol.urls')),
     url(r'user/', include('Api.User.urls')),
+    url(r'search/', include('Api.Search.urls')),
 ]
