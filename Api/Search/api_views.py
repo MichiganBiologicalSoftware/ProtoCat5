@@ -35,9 +35,13 @@ def index(request):
     for user in users:
         match_users.append(user.user.username)
 
+    for protocol in helper_search_protocol(query_words):
+        match_protocols.append(protocol.title)
+
     return JsonResponse({
         "query": query,
-        "users": match_users
+        "users": match_users,
+        "protocols": match_protocols
     })
 
 def helper_search_protocol(query_words):
