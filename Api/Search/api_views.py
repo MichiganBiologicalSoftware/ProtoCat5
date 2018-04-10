@@ -2,6 +2,7 @@
 
 from django.http import HttpResponse, JsonResponse
 from User.models import UserInfo
+from Protocol.models import Protocol
 from django.shortcuts import render
 from django.core import serializers
 
@@ -9,11 +10,13 @@ def index(request):
     """Favorites API index page."""
     query = request.GET.get("q", "")
     match_users = []
+    match_protocols = []
 
     if not query:
         return JsonResponse({
             "query": query,
-            "users": match_users
+            "users": match_users,
+            "protocols": match_protocols
         })
 
     query_words = query.split()
@@ -36,3 +39,18 @@ def index(request):
         "query": query,
         "users": match_users
     })
+
+def helper_search_protocol(query_words):
+    """Search the protocols for the query words."""
+    protocols = Protocol.objects.filter(title__icontains=query_words[0])
+    protocols = protocols | Protocol.objects.filter(description__icontains=query_words[0])
+    protocols = protocols | Protocol.objects.filter(materials__icontains=query_words[0])
+    protocols = protocols | Protocol.objects.filter(steps__content__icontains=query_words[0])
+
+    for word in query_words[1:]:
+        protocols = Protocol.objects.filter(title__icontains=word)
+        protocols = protocols | Protocol.objects.filter(description__icontains=word)
+        protocols = protocols | Protocol.objects.filter(materials__icontains=word)
+        protocols = protocols | Protocol.objects.filter(steps__content__icontains=word)
+
+    return protocols    
