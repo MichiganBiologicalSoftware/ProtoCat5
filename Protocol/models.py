@@ -3,9 +3,15 @@ from User.models import UserInfo
 # Create your models here.
 
 class Protocol(models.Model):
-    """Class Docstring"""
+    """Class Docstring."""
     title = models.TextField()
     description = models.TextField()
     materials = models.TextField()
     author = models.ForeignKey(UserInfo, related_name="protocols")
 	
+
+class ProtocolStep(models.Model):
+    """Class Docstring."""
+    content = models.TextField()
+    number = models.IntegerField()
+    protocol = models.ForeignKey(Protocol, related_name="steps")
