@@ -4,5 +4,5 @@ from django.conf.urls import url
 from . import api_views
 
 urlpatterns = [
-    url(r'$', api_views.index, name='index')
+    url(r'^(?P<protocol_id>[0-9]*)/?$', api_views.index, name='index')
 ]
