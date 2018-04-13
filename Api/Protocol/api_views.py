@@ -16,5 +16,16 @@ def index(request, protocol_id=None):
 
     response = {}
     response["id"] = protocol.id
+    response["title"] = protocol.title
+    response["description"] = protocol.description
+    response["author"] = protocol.author.user.username
+    response["materials"] = protocol.materials
+
+    response["steps"] = []
+    for step in protocol.steps.all():
+        step_dict = {}
+        step_dict["number"] = step.number
+        step_dict["content"] = step.content
+        response["steps"].append(step_dict)
 
     return JsonResponse(response)
